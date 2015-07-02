@@ -1,0 +1,133 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'đđsave',
+1 verbose cli   'cookies-js' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.32
+4 verbose node symlink C:\Program Files\nodejs\\node.exe
+5 warn package.json cuoithangdidau@1.0.0 No description
+6 warn package.json cuoithangdidau@1.0.0 No repository field.
+7 warn package.json cuoithangdidau@1.0.0 No README data
+8 verbose readDependencies using package.json deps
+9 verbose cache add [ 'đđsave', null ]
+10 verbose cache add name=undefined spec="đđsave" args=["đđsave",null]
+11 verbose parsed url { protocol: null,
+11 verbose parsed url   slashes: null,
+11 verbose parsed url   auth: null,
+11 verbose parsed url   host: null,
+11 verbose parsed url   port: null,
+11 verbose parsed url   hostname: null,
+11 verbose parsed url   hash: null,
+11 verbose parsed url   search: null,
+11 verbose parsed url   query: null,
+11 verbose parsed url   pathname: 'đđsave',
+11 verbose parsed url   path: 'đđsave',
+11 verbose parsed url   href: 'đđsave' }
+12 verbose cache add [ 'cookies-js', null ]
+13 verbose cache add name=undefined spec="cookies-js" args=["cookies-js",null]
+14 verbose parsed url { protocol: null,
+14 verbose parsed url   slashes: null,
+14 verbose parsed url   auth: null,
+14 verbose parsed url   host: null,
+14 verbose parsed url   port: null,
+14 verbose parsed url   hostname: null,
+14 verbose parsed url   hash: null,
+14 verbose parsed url   search: null,
+14 verbose parsed url   query: null,
+14 verbose parsed url   pathname: 'cookies-js',
+14 verbose parsed url   path: 'cookies-js',
+14 verbose parsed url   href: 'cookies-js' }
+15 silly lockFile 34bfc77d-save đđsave
+16 verbose lock đđsave C:\Users\redimed\AppData\Roaming\npm-cache\34bfc77d-save.lock
+17 silly lockFile 8124ece3-cookies-js cookies-js
+18 verbose lock cookies-js C:\Users\redimed\AppData\Roaming\npm-cache\8124ece3-cookies-js.lock
+19 silly lockFile 34bfc77d-save đđsave
+20 silly lockFile 34bfc77d-save đđsave
+21 silly lockFile 8124ece3-cookies-js cookies-js
+22 silly lockFile 8124ece3-cookies-js cookies-js
+23 verbose addNamed [ 'đđsave', '' ]
+24 verbose addNamed [ null, '*' ]
+25 silly lockFile bb6659fd-save đđsave@
+26 verbose lock đđsave@ C:\Users\redimed\AppData\Roaming\npm-cache\bb6659fd-save.lock
+27 verbose addNamed [ 'cookies-js', '' ]
+28 verbose addNamed [ null, '*' ]
+29 silly lockFile b6badddc-cookies-js cookies-js@
+30 verbose lock cookies-js@ C:\Users\redimed\AppData\Roaming\npm-cache\b6badddc-cookies-js.lock
+31 silly addNameRange { name: 'đđsave', range: '*', hasData: false }
+32 verbose request where is /đđsave
+33 verbose request registry https://registry.npmjs.org/
+34 verbose request id 0b64320f942c95db
+35 verbose url raw /đđsave
+36 verbose url resolving [ 'https://registry.npmjs.org/', './%C4%91%C4%91save' ]
+37 verbose url resolved https://registry.npmjs.org/%C4%91%C4%91save
+38 verbose request where is https://registry.npmjs.org/%C4%91%C4%91save
+39 info trying registry request attempt 1 at 16:58:11
+40 http GET https://registry.npmjs.org/%C4%91%C4%91save
+41 silly addNameRange { name: 'cookies-js', range: '*', hasData: false }
+42 verbose request where is /cookies-js
+43 verbose request registry https://registry.npmjs.org/
+44 verbose url raw /cookies-js
+45 verbose url resolving [ 'https://registry.npmjs.org/', './cookies-js' ]
+46 verbose url resolved https://registry.npmjs.org/cookies-js
+47 verbose request where is https://registry.npmjs.org/cookies-js
+48 info trying registry request attempt 1 at 16:58:11
+49 verbose etag "18QRNN2T4E65HUYJ50VL4PB6S"
+50 http GET https://registry.npmjs.org/cookies-js
+51 http 404 https://registry.npmjs.org/%C4%91%C4%91save
+52 silly registry.get cb [ 404,
+52 silly registry.get   { 'content-type': 'application/json',
+52 silly registry.get     'cache-control': 'max-age=0',
+52 silly registry.get     'content-length': '72',
+52 silly registry.get     'accept-ranges': 'bytes',
+52 silly registry.get     date: 'Mon, 22 Jun 2015 09:58:12 GMT',
+52 silly registry.get     via: '1.1 varnish',
+52 silly registry.get     age: '0',
+52 silly registry.get     connection: 'keep-alive',
+52 silly registry.get     'x-served-by': 'cache-lax1424-LAX',
+52 silly registry.get     'x-cache': 'MISS',
+52 silly registry.get     'x-cache-hits': '0',
+52 silly registry.get     'x-timer': 'S1434967092.321292,VS0,VE41' } ]
+53 silly lockFile bb6659fd-save đđsave@
+54 silly lockFile bb6659fd-save đđsave@
+55 http 304 https://registry.npmjs.org/cookies-js
+56 silly registry.get cb [ 304,
+56 silly registry.get   { date: 'Mon, 22 Jun 2015 09:58:12 GMT',
+56 silly registry.get     via: '1.1 varnish',
+56 silly registry.get     'cache-control': 'max-age=60',
+56 silly registry.get     etag: '"18QRNN2T4E65HUYJ50VL4PB6S"',
+56 silly registry.get     age: '0',
+56 silly registry.get     connection: 'keep-alive',
+56 silly registry.get     'x-served-by': 'cache-lax1421-LAX',
+56 silly registry.get     'x-cache': 'MISS',
+56 silly registry.get     'x-cache-hits': '0',
+56 silly registry.get     'x-timer': 'S1434967092.334892,VS0,VE87',
+56 silly registry.get     vary: 'Accept' } ]
+57 verbose etag https://registry.npmjs.org/cookies-js from cache
+58 silly addNameRange number 2 { name: 'cookies-js', range: '*', hasData: true }
+59 silly addNameRange versions [ 'cookies-js',
+59 silly addNameRange   [ '0.3.1', '0.4.0', '1.0.0', '1.0.1', '1.1.0', '1.2.0', '1.2.1' ] ]
+60 verbose addNamed [ 'cookies-js', '1.2.1' ]
+61 verbose addNamed [ '1.2.1', '1.2.1' ]
+62 silly lockFile 5a4c4b9c-cookies-js-1-2-1 cookies-js@1.2.1
+63 verbose lock cookies-js@1.2.1 C:\Users\redimed\AppData\Roaming\npm-cache\5a4c4b9c-cookies-js-1-2-1.lock
+64 silly lockFile 5a4c4b9c-cookies-js-1-2-1 cookies-js@1.2.1
+65 silly lockFile 5a4c4b9c-cookies-js-1-2-1 cookies-js@1.2.1
+66 silly lockFile b6badddc-cookies-js cookies-js@
+67 silly lockFile b6badddc-cookies-js cookies-js@
+68 error 404 Not Found
+68 error 404
+68 error 404 'đđsave' is not in the npm registry.
+68 error 404 You should bug the author to publish it
+68 error 404 It was specified as a dependency of 'cuoithangdidau'
+68 error 404
+68 error 404 Note that you can also install from a
+68 error 404 tarball, folder, or http url, or git url.
+69 error System Windows_NT 6.2.9200
+70 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "đđsave" "cookies-js"
+71 error cwd C:\xampp\htdocs\giamgia\bcv
+72 error node -v v0.10.32
+73 error npm -v 1.4.28
+74 error code E404
+75 verbose exit [ 1, true ]
