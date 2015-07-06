@@ -23,7 +23,6 @@ var Dialog = React.createClass({
 	render: function(){
 		return (
 			<div className={"ui "+this.props.size+" modal"}>
-  				<i className="close icon"></i>
   				<div className="header">
     				{this.props.header}
   				</div>

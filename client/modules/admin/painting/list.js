@@ -1,5 +1,5 @@
 var React = require('react');
-var PoemsController = require('controllers/admin/poems.js');
+var PaintingController = require('controllers/admin/painting.js');
 var Config = require('config');
 var Pagination = require('components/pagination');
 var Dialog = require('components/dialog');
@@ -21,16 +21,16 @@ var List = React.createClass({
 		}
 	},
 	componentDidMount: function(){
-		PoemsController.listPoems(this);
+		PaintingController.listPainting(this);
 	},
 	onClickAdd: function(){
 		this.context.router.transitionTo('admin_painting_add');
 	},
 	onClickPage: function(page){
-		PoemsController.onClickPage(this, page);
+		PaintingController.onClickPage(this, page);
 	},
 	onEnterName: function(event){
-		PoemsController.onEnterName(this, event);
+		PaintingController.onEnterName(this, event);
 	},
 	goToEdit: function(poem, event){
 		this.context.router.transitionTo('admin_poems_edit', {id: poem.id});
@@ -40,7 +40,7 @@ var List = React.createClass({
 		this.refs.remove_dialog.open();
 	},
 	onClickRemoveDialog: function(action){
-		PoemsController.onRemove(this, action);
+		PaintingController.onRemove(this, action);
 	},
 	render: function(){
 		var paginate_display = (this.state.count > 0) ? 'block' : 'none';
@@ -60,7 +60,7 @@ var List = React.createClass({
 				</Dialog>
 				<div className="row">
 					<div className="column">
-						<div className="ui positive button" onClick={this.onClickAdd}>Thêm ảnh</div>
+						<div className="ui positive button" onClick={this.onClickAdd}>Thêm tranh</div>
 						<span style={{float: 'right', display: paginate_display}}>
 							<Pagination count={this.state.count} 
 								countData={this.state.list.length} onClickPage={this.onClickPage}/>
@@ -72,8 +72,8 @@ var List = React.createClass({
 						<div className="ui small form">
 							<div className="three fields">
 								<div className="field">
-									<label>Tên bài thơ</label>
-									<input type="text" placeholder="Tên bài thơ" onKeyDown={this.onEnterName}/>
+									<label>Tên tranh</label>
+									<input type="text" placeholder="Tên tranh" onKeyDown={this.onEnterName}/>
 								</div>
 							</div>
 						</div>
@@ -81,32 +81,31 @@ var List = React.createClass({
 				</div>
 				<div className="row">
 					<div className="column">
-						<div className="ui basic segment" style={{padding: 0}} ref="table_list">
-							<table className="ui table">
-								<thead>
-									<tr>
-										<th>Tên bài thơ</th>
-										<th>Ngày tạo</th>
-										<th>Thao tác</th>
-									</tr>
-								</thead>
-								<tbody>
+						<div className="ui basic segment" style={{padding: 0}} ref="table_list" ref="card_list">
+							<div className="ui cards" ref="card_list">
 								{
 									this.state.list.map(function(row, index){
 										return (
-											<tr key={index}>
-												<td>{row.name}</td>
-												<td>{moment(row.created_at).tz(Config.clientTimezone).format('DD/MM/YYYY HH:mm:ss')}</td>
-												<td>
-													<a onClick={this.goToEdit.bind(this, row)}>Sửa&nbsp;|&nbsp;</a>
-													<a onClick={this.openRemoveDialog.bind(this, row)}>Xóa</a>
-												</td>
-											</tr>
+											<div className="card" key={index}>
+												<div className="image">
+													<img src={row.image}/>
+												</div>
+												<div className="content">
+													<div className="header">
+														{row.name}
+													</div>
+												</div>
+												<div className="extra content">
+											      	<div className="ui two buttons">
+											        	<div className="ui green button">Sửa</div>
+											        	<div className="ui red button">Xóa</div>
+											      </div>
+											    </div>
+											</div>
 										)
 									}, this)
 								}
-								</tbody>
-							</table>
+							</div>
 						</div>
 					</div>
 				</div>

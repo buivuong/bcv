@@ -27,14 +27,14 @@ var Controller = {
 
 		})
 	},
-	listPoems: function(dom){
+	listPainting: function(dom){
 		var postData = {limit: dom.limit, offset: dom.offset, search: dom.search};
-		$(React.findDOMNode(dom.refs.table_list)).addClass('loading');
+		$(React.findDOMNode(dom.refs.card_list)).addClass('loading');
 
-		PoemsService.list(postData)
+		PaintingService.list(postData)
 		.then(function(response){
 			if(dom.isMounted()){
-				$(React.findDOMNode(dom.refs.table_list)).removeClass('loading');
+				$(React.findDOMNode(dom.refs.card_list)).removeClass('loading');
 				dom.setState({list: response.data, count: response.count});
 			}
 		}, function(error){
@@ -43,19 +43,19 @@ var Controller = {
 	},
 	onClickPage: function(dom, page){
 		dom.offset = (page-1)*dom.limit;
-		this.listPoems(dom);
+		this.listPainting(dom);
 	},
 	onEnterName: function(dom, event){
 		if(event.keyCode === 13){
 			dom.search.name = event.target.value;
 			dom.offset = 0;
-			this.listPoems(dom);
+			this.listPainting(dom);
 		}
 	},
 	resetForm: function(dom){
 		$('#'+dom.id_pre+'name').val('');
 		dom.author = {
-			id: null,
+			id: '',
 			name: 'Chưa có'
 		},
 		dom.refs.content_editor.reset();
@@ -69,32 +69,25 @@ var Controller = {
 			var admin_user = JSON.parse(Cookies.get('admin_user'));
 			user_id = admin_user.id;
 		}
-		var photo = dom.refs.avatar.getAvatar();
-		var name = $('#'+dom.id_pre+'name').val();
 
-		data.append('image', photo);
-		data.append('name', name);
-
-		return data;
-
-		/*var user_id = null;
-
-		if(Cookies.get('admin_user')){
-			var admin_user = JSON.parse(Cookies.get('admin_user'));
-			user_id = admin_user.id;
-		}
-
-		var name = $('#'+dom.id_pre+'name').val();
-		var description = $('#'+dom.id_pre+'description').val();
-		var content = dom.refs.content_editor.getHTML();
-		var author_id = dom.author.id;
 		var now = moment().tz(Config.serverTimezone).format('YYYY-MM-DD HH:mm:ss');
 		var created_at = updated_at = now;
 
-		return {
-			name: name, content: content, description: description, author_id: author_id,
-			created_at: created_at, updated_at: updated_at, created_by: user_id, updated_by: user_id
-		}*/
+		var photo = dom.refs.avatar.getAvatar();
+		var name = $('#'+dom.id_pre+'name').val();
+		var author_id = dom.author.id;
+		var description = $('#'+dom.id_pre+'description').val();
+		var content = dom.refs.content_editor.getHTML();
+
+		data.append('image', photo);
+		data.append('name', name);
+		data.append('author_id', author_id);
+		data.append('description', description);
+		data.append('content', content);
+		data.append('user_id', user_id);
+		data.append('current_date', created_at);		
+
+		return data;
 	},
 	beforeSubmit: function(dom){
 		$(React.findDOMNode(dom)).removeClass('error');
@@ -102,30 +95,24 @@ var Controller = {
 		Validation.beforeErrorsDiv(dom);
 	},
 	onClickSubmit: function(dom){
+		this.beforeSubmit(dom);
 		var postData = this.getInputsValue(dom);
 
 		PaintingService.add(postData)
 		.then(function(response){
-
-		}, function(error){
-			console.log(error);
-		})
-
-		/*this.beforeSubmit(dom);
-		var postData = this.getInputsValue(dom);
-
-		PoemsService.add(postData)
-		.then(function(response){
 			$(React.findDOMNode(dom)).removeClass('loading');
 			this.resetForm(dom);
-			dom.context.router.transitionTo('admin_poems_list');
+			dom.context.router.transitionTo('admin_painting_list');
 		}.bind(this), function(error){
 			$(React.findDOMNode(dom)).removeClass('loading');
 			$(React.findDOMNode(dom)).addClass('error');
-
-			if(error.status === 400)
-				Validation.afterErrorsDiv(dom, error.messages);
-		}.bind(this))*/
+			if(error.status === 400){
+				if(is.not.array(error.messages))
+					dom.refs.image_error_dialog.open();
+				else
+					Validation.afterErrorsDiv(dom, error.messages);
+			}
+		}.bind(this))
 	},
 	onClickEdit: function(dom){
 		this.beforeSubmit(dom);
@@ -152,7 +139,7 @@ var Controller = {
 			.then(function(deleted){
 				this.listPoems(dom);
 			}.bind(this), function(error){
-
+				
 			})
 		}
 

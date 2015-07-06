@@ -7,12 +7,12 @@ var AuthorPopup = require('modules/admin/authors/popup');
 
 var Form = React.createClass({
 	id_pre: 'admin_painting_add_',
-	author: null,
+	author: '',
 	contextTypes: {
 		router: React.PropTypes.func
 	},
 	componentWillMount: function(){
-		this.author = {id: null, name: 'Chưa có'};
+		this.author = {id: '', name: 'Chưa có'};
 	},
 	onClickSubmit: function(){
 		PaintingController.onClickSubmit(this);
@@ -31,6 +31,9 @@ var Form = React.createClass({
 			<div className="ui grid">
 				<Dialog header="Chọn tác giả" ref="author_dialog">
 					<AuthorPopup onClickRow={this.onClickRowAuthor}/>
+				</Dialog>
+				<Dialog header="Thông báo lỗi" ref="image_error_dialog">
+					<p>Ảnh chưa chọn. Mời bạn chọn ảnh rồi thêm lại</p>
 				</Dialog>
 				<div className="row">
 					<div className="column">

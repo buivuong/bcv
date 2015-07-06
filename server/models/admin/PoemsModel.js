@@ -4,6 +4,7 @@ var extend = require('extend');
 var Model = {
 	require_fields: [
 		{field: 'name', message: 'Bắt buộc nhập'},
+		{field: 'type', message: 'Bắt buộc nhập'},
 		{field: 'author_id', message: 'Bắt buộc nhập'}
 	],
 	validation_require_fields: function(post_require_fields){

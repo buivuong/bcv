@@ -2,7 +2,7 @@ var React = require('react');
 
 var Avatar = React.createClass({
 	id_pre: 'avatar_photo',
-	image: null,
+	image: '',
 	getInitialState: function(){
 		return {
 			image: 'images/empty_gallery.png'

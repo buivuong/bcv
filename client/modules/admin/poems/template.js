@@ -6,7 +6,7 @@ var RouteHandler = Router.RouteHandler;
 var Template = React.createClass({
 	render: function(){
 		return (
-			<div className="ui segment">
+			<div className="ui basic segment">
 				<RouteHandler/>
 			</div>
 		);

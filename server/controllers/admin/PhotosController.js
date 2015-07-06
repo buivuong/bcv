@@ -4,6 +4,9 @@ var PhotosModel = require('models/admin/PhotosModel');
 var is = require('is_js');
 var async = require('async');
 var functions = require('functions');
+var fs = require('fs');
+var path = require('path');
+var Config = require('config');
 
 var main = {
 	postDelete: function(req, res){
@@ -72,7 +75,7 @@ var main = {
 
 		async.waterfall([
 			function(callback){
-				knex('poems')
+				knex('photos')
 				.where('name', 'like', '%'+functions.execEmpty(postData.search.name)+'%')
 				.where('deleted', 0)
 				.limit(limit)
@@ -103,30 +106,54 @@ var main = {
 		var files = req.files;
 
 		var image = files.image;
-		console.log(req.files);
+		var postData = {
+			name: req.body.name,
+			author_id: req.body.author_id
+		}
+
 		if(is.null(image) || is.undefined(image))
 			return res.status(400).json(PhotosModel.require_image_field);
-
-		/*var postData = req.body.data;
-		var insertData = {
-			name: postData.name,
-			author_id: postData.author_id,
-			content: postData.content,
-			description: postData.description,
-			created_at: postData.created_at,
-			updated_at: postData.updated_at,
-			created_by: postData.created_by,
-			updated_by: postData.updated_by
-		}
 
 		var errors = PoemsModel.validation_require_fields(postData);
 
 		if(errors.length > 0)
 			return res.status(400).json(errors);
 
+		var image_name = new Date().getTime().toString();
+
+		var insertData = {
+			name: req.body.name,
+			author_id: req.body.author_id,
+			content: req.body.content,
+			description: req.body.description,
+			updated_at: req.body.current_date,
+			created_at: req.body.current_date,
+			created_by: req.body.user_id,
+			updated_by: req.body.user_id,
+			image: 'images/painting/'+image_name+'.jpg'
+		}
+
 		async.waterfall([
 			function(callback){
-				knex('poems')
+				fs.readFile(files.image.path, function(error, data){
+					if(error)
+						return res.status(500).json(error);
+					else{
+						var newPath = path.dirname(process.cwd())+Config.storagePhoto+image_name+'.jpg';
+						callback(null, newPath, data);
+					}
+				})
+			},
+			function(newPath, data, callback){
+				fs.writeFile(newPath, data, function(error){
+					if(error)
+						return res.status(500).json(error);
+					else
+						callback(null);
+				})
+			},
+			function(callback){
+				knex('photos')
 				.insert(insertData)
 				.then(function(rows){
 					return res.json({data: {id: rows[0]}});
@@ -135,7 +162,7 @@ var main = {
 					return res.status(500).json(error);
 				})
 			}
-		]);*/
+		]);
 	}
 }
 

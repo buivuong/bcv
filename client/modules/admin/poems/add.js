@@ -1,8 +1,10 @@
 var React = require('react');
 var PoemsController = require('controllers/admin/poems.js');
+var PoemsService = require('services/poems');
 var TextEditor = require('components/text_editor');
 var AuthorDialog = require('components/dialog');
 var AuthorPopup = require('modules/admin/authors/popup');
+var Dropdown = require('components/dropdown');
 
 var Form = React.createClass({
 	id_pre: 'admin_poems_add_',
@@ -32,7 +34,7 @@ var Form = React.createClass({
 					<AuthorPopup onClickRow={this.onClickRowAuthor}/>
 				</AuthorDialog>
 				<div className="field">
-					<button className="ui green button" onClick={this.onClickSubmit}>Thêm bài thơ</button>
+					<button className="ui small secondary button" onClick={this.onClickSubmit}>Lưu thơ</button>
 				</div>
 				<div className="two fields">
 					<div className="required field">
@@ -41,18 +43,24 @@ var Form = React.createClass({
 					</div>
 					<div className="required field">
 						<label>Chọn tác giả</label>
-						<button className="ui fluid button" onClick={this.onClickAuthor} id={this.id_pre+'author_id'}>
+						<button className="ui fluid secondary button" onClick={this.onClickAuthor} id={this.id_pre+'author_id'}>
 							{this.author.name}
 						</button>
+					</div>
+				</div>
+				<div className="two fields">
+					<div className="required field">
+						<label>Loại thơ</label>
+						<Dropdown list={PoemsService.PoemType} ref="poem_type" idx={this.id_pre+'type'}/>
+					</div>
+					<div className="field">
+						<label>Mô tả ngắn</label>
+						<textarea rows="2" id={this.id_pre+'description'} placeholder="Mô tả ngắn"/>
 					</div>
 				</div>
 				<div className="field">
 					<label>Nội dung bài thơ</label>
 					<TextEditor placeholder="Bài thơ" ref="content_editor"/>
-				</div>
-				<div className="field">
-					<label>Mô tả bài thơ</label>
-					<textarea id={this.id_pre+'description'}></textarea>
 				</div>
 			</div>
 		);

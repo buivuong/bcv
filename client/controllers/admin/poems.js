@@ -20,6 +20,7 @@ var Controller = {
 				},
 				$('#'+dom.id_pre+'description').val(response.data.description);
 				dom.refs.content_editor.setHTML(response.data.content);
+				dom.refs.poem_type.setValue(response.data.type);
 				dom.forceUpdate();
 			}
 		}, function(error){
@@ -70,6 +71,7 @@ var Controller = {
 		}
 
 		var name = $('#'+dom.id_pre+'name').val();
+		var type = dom.refs.poem_type.getValue();
 		var description = $('#'+dom.id_pre+'description').val();
 		var content = dom.refs.content_editor.getHTML();
 		var author_id = dom.author.id;
@@ -77,7 +79,7 @@ var Controller = {
 		var created_at = updated_at = now;
 
 		return {
-			name: name, content: content, description: description, author_id: author_id,
+			name: name, content: content, description: description, author_id: author_id, type: type,
 			created_at: created_at, updated_at: updated_at, created_by: user_id, updated_by: user_id
 		}
 	},

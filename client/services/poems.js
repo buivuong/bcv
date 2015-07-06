@@ -3,6 +3,11 @@ var config = require('config');
 var baseUrl = config.baseServerUrlAdmin+'poems/';
 
 var Service = {
+	PoemType: {
+		thotinh: 'Thơ tình',
+		thodoi: 'Thơ đời',
+		thodao: 'Thơ đạo'
+	},
 	detail: function(post){
 		var url = baseUrl+'detail';
 		var postData = {data: post};

@@ -27,6 +27,7 @@ var main = {
 
 		var updateData = {
 			name: postData.name,
+			type: postData.type,
 			author_id: postData.author_id,
 			content: postData.content,
 			description: postData.description,
@@ -53,7 +54,7 @@ var main = {
 		var postData = req.body.data;
 
 		knex('poems')
-		.select('poems.id', 'poems.name', 'poems.author_id', 'poems.content', 'poems.description', 'authors.name AS author_name')
+		.select('poems.id', 'poems.name', 'poems.author_id', 'poems.content', 'poems.type', 'poems.description', 'authors.name AS author_name')
 		.innerJoin('authors', 'authors.id', 'poems.author_id')
 		.where('poems.id', postData.id)
 		.then(function(rows){
@@ -102,6 +103,7 @@ var main = {
 		var postData = req.body.data;
 		var insertData = {
 			name: postData.name,
+			type: postData.type,
 			author_id: postData.author_id,
 			content: postData.content,
 			description: postData.description,

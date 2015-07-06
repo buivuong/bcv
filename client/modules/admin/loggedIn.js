@@ -9,14 +9,10 @@ var LoggedIn = React.createClass({
 	mixins: [AuthMixin],
 	render: function(){
 		return (
-			<div className="ui page grid">
-				<div className="row">
-					<div className="three wide column">
-						<LeftMenu/>
-					</div>
-					<div className="thirteen wide column">
-						<RouteHandler/>
-					</div>
+			<div className="ui fluid container">
+				<LeftMenu/>
+				<div style={{marginLeft: '16rem', marginRight: '1rem'}}>
+					<RouteHandler/>
 				</div>
 			</div>
 		);

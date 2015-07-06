@@ -43,7 +43,9 @@ var List = React.createClass({
 		PoemsController.onRemove(this, action);
 	},
 	render: function(){
-		var paginate_display = (this.state.count > 0) ? 'block' : 'none';
+		var paginate_display = (this.state.count > this.limit) ? 'block' : 'none';
+		var table_display = (this.state.list.length > 0) ? 'table': 'none';
+		var no_list_display = (this.state.list.length === 0) ? 'block': 'none';
 
 		return (
 			<div className="ui grid">
@@ -53,14 +55,14 @@ var List = React.createClass({
 							<p>Bạn có thật sự muốn xóa bài thơ này không ?</p>
 						</div>
 						<div className="sixteen wide column">
-							<div className="ui small positive button" onClick={this.onClickRemoveDialog.bind(this, 'yes')}>Có</div>
+							<div className="ui small secondary button" onClick={this.onClickRemoveDialog.bind(this, 'yes')}>Có</div>
 							<div className="ui small negative button" onClick={this.onClickRemoveDialog.bind(this, 'no')}>Không</div>
 						</div>
 					</div>
 				</Dialog>
 				<div className="row">
 					<div className="column">
-						<div className="ui positive button" onClick={this.onClickAdd}>Thêm bài thơ</div>
+						<div className="ui small secondary button" onClick={this.onClickAdd}>Thêm bài thơ</div>
 						<span style={{float: 'right', display: paginate_display}}>
 							<Pagination count={this.state.count} 
 								countData={this.state.list.length} onClickPage={this.onClickPage}/>
@@ -82,7 +84,8 @@ var List = React.createClass({
 				<div className="row">
 					<div className="column">
 						<div className="ui basic segment" style={{padding: 0}} ref="table_list">
-							<table className="ui table">
+							<p style={{display: no_list_display}}>Không có dữ liệu</p>
+							<table className="ui table" style={{display: table_display}}>
 								<thead>
 									<tr>
 										<th>Tên bài thơ</th>

@@ -67,11 +67,11 @@
 	var Admin_Poem = __webpack_require__(315);
 	var Admin_Poem_List = __webpack_require__(316);
 	var Admin_Poem_Add = __webpack_require__(321);
-	var Admin_Poem_Edit = __webpack_require__(323);
+	var Admin_Poem_Edit = __webpack_require__(324);
 
-	var Admin_Painting = __webpack_require__(324);
-	var Admin_Painting_List = __webpack_require__(325);
-	var Admin_Painting_Add = __webpack_require__(326);
+	var Admin_Painting = __webpack_require__(325);
+	var Admin_Painting_List = __webpack_require__(326);
+	var Admin_Painting_Add = __webpack_require__(329);
 
 	var routes = (
 		React.createElement(Route, {name: "app", path: "/", handler: App}, 
@@ -40726,14 +40726,10 @@
 		mixins: [AuthMixin],
 		render: function(){
 			return (
-				React.createElement("div", {className: "ui page grid"}, 
-					React.createElement("div", {className: "row"}, 
-						React.createElement("div", {className: "three wide column"}, 
-							React.createElement(LeftMenu, null)
-						), 
-						React.createElement("div", {className: "thirteen wide column"}, 
-							React.createElement(RouteHandler, null)
-						)
+				React.createElement("div", {className: "ui fluid container"}, 
+					React.createElement(LeftMenu, null), 
+					React.createElement("div", {style: {marginLeft: '16rem', marginRight: '1rem'}}, 
+						React.createElement(RouteHandler, null)
 					)
 				)
 			);
@@ -40789,17 +40785,30 @@
 		},
 		render: function(){
 			return (
-				React.createElement("div", {className: "ui vertical menu"}, 
+				React.createElement("div", {className: "ui left fixed inverted vertical menu"}, 
+					React.createElement("div", {className: "item"}, 
+						React.createElement("img", {className: "ui tiny centered circular image", src: "images/logo.jpg"})
+					), 
+					React.createElement("div", {className: "item"}, 
+						React.createElement("div", {className: "ui small icon input"}, 
+							React.createElement("input", {type: "text", placeholder: "Tìm kiếm..."}), 
+							React.createElement("i", {className: "search icon"})
+						)
+					), 
 					React.createElement("a", {className: "item", onClick: this.onClickHome}, 
+						React.createElement("i", {className: "home icon"}), 
 						"Trang chủ"
 					), 
 					React.createElement("a", {className: "item", onClick: this.onClickAuthor}, 
+						React.createElement("i", {className: "student icon"}), 
 						"Tác giả"
 					), 
 					React.createElement("a", {className: "item", onClick: this.onClickPoem}, 
+						React.createElement("i", {className: "leaf icon"}), 
 						"Thơ ca"
 					), 
 					React.createElement("a", {className: "item", onClick: this.onClickPainting}, 
+						React.createElement("i", {className: "file image outline icon"}), 
 						"Tranh vẽ"
 					)
 				)
@@ -41290,7 +41299,7 @@
 	var Template = React.createClass({displayName: "Template",
 		render: function(){
 			return (
-				React.createElement("div", {className: "ui segment"}, 
+				React.createElement("div", {className: "ui basic segment"}, 
 					React.createElement(RouteHandler, null)
 				)
 			);
@@ -41348,7 +41357,9 @@
 			PoemsController.onRemove(this, action);
 		},
 		render: function(){
-			var paginate_display = (this.state.count > 0) ? 'block' : 'none';
+			var paginate_display = (this.state.count > this.limit) ? 'block' : 'none';
+			var table_display = (this.state.list.length > 0) ? 'table': 'none';
+			var no_list_display = (this.state.list.length === 0) ? 'block': 'none';
 
 			return (
 				React.createElement("div", {className: "ui grid"}, 
@@ -41358,14 +41369,14 @@
 								React.createElement("p", null, "Bạn có thật sự muốn xóa bài thơ này không ?")
 							), 
 							React.createElement("div", {className: "sixteen wide column"}, 
-								React.createElement("div", {className: "ui small positive button", onClick: this.onClickRemoveDialog.bind(this, 'yes')}, "Có"), 
+								React.createElement("div", {className: "ui small secondary button", onClick: this.onClickRemoveDialog.bind(this, 'yes')}, "Có"), 
 								React.createElement("div", {className: "ui small negative button", onClick: this.onClickRemoveDialog.bind(this, 'no')}, "Không")
 							)
 						)
 					), 
 					React.createElement("div", {className: "row"}, 
 						React.createElement("div", {className: "column"}, 
-							React.createElement("div", {className: "ui positive button", onClick: this.onClickAdd}, "Thêm bài thơ"), 
+							React.createElement("div", {className: "ui small secondary button", onClick: this.onClickAdd}, "Thêm bài thơ"), 
 							React.createElement("span", {style: {float: 'right', display: paginate_display}}, 
 								React.createElement(Pagination, {count: this.state.count, 
 									countData: this.state.list.length, onClickPage: this.onClickPage})
@@ -41387,7 +41398,8 @@
 					React.createElement("div", {className: "row"}, 
 						React.createElement("div", {className: "column"}, 
 							React.createElement("div", {className: "ui basic segment", style: {padding: 0}, ref: "table_list"}, 
-								React.createElement("table", {className: "ui table"}, 
+								React.createElement("p", {style: {display: no_list_display}}, "Không có dữ liệu"), 
+								React.createElement("table", {className: "ui table", style: {display: table_display}}, 
 									React.createElement("thead", null, 
 										React.createElement("tr", null, 
 											React.createElement("th", null, "Tên bài thơ"), 
@@ -41449,6 +41461,7 @@
 					},
 					$('#'+dom.id_pre+'description').val(response.data.description);
 					dom.refs.content_editor.setHTML(response.data.content);
+					dom.refs.poem_type.setValue(response.data.type);
 					dom.forceUpdate();
 				}
 			}, function(error){
@@ -41499,6 +41512,7 @@
 			}
 
 			var name = $('#'+dom.id_pre+'name').val();
+			var type = dom.refs.poem_type.getValue();
 			var description = $('#'+dom.id_pre+'description').val();
 			var content = dom.refs.content_editor.getHTML();
 			var author_id = dom.author.id;
@@ -41506,7 +41520,7 @@
 			var created_at = updated_at = now;
 
 			return {
-				name: name, content: content, description: description, author_id: author_id,
+				name: name, content: content, description: description, author_id: author_id, type: type,
 				created_at: created_at, updated_at: updated_at, created_by: user_id, updated_by: user_id
 			}
 		},
@@ -41577,6 +41591,11 @@
 	var baseUrl = config.baseServerUrlAdmin+'poems/';
 
 	var Service = {
+		PoemType: {
+			thotinh: 'Thơ tình',
+			thodoi: 'Thơ đời',
+			thodao: 'Thơ đạo'
+		},
 		detail: function(post){
 			var url = baseUrl+'detail';
 			var postData = {data: post};
@@ -41831,7 +41850,6 @@
 		render: function(){
 			return (
 				React.createElement("div", {className: "ui "+this.props.size+" modal"}, 
-	  				React.createElement("i", {className: "close icon"}), 
 	  				React.createElement("div", {className: "header"}, 
 	    				this.props.header
 	  				), 
@@ -41851,9 +41869,11 @@
 
 	var React = __webpack_require__(2);
 	var PoemsController = __webpack_require__(317);
+	var PoemsService = __webpack_require__(318);
 	var TextEditor = __webpack_require__(314);
 	var AuthorDialog = __webpack_require__(320);
 	var AuthorPopup = __webpack_require__(322);
+	var Dropdown = __webpack_require__(323);
 
 	var Form = React.createClass({displayName: "Form",
 		id_pre: 'admin_poems_add_',
@@ -41883,7 +41903,7 @@
 						React.createElement(AuthorPopup, {onClickRow: this.onClickRowAuthor})
 					), 
 					React.createElement("div", {className: "field"}, 
-						React.createElement("button", {className: "ui green button", onClick: this.onClickSubmit}, "Thêm bài thơ")
+						React.createElement("button", {className: "ui small secondary button", onClick: this.onClickSubmit}, "Lưu thơ")
 					), 
 					React.createElement("div", {className: "two fields"}, 
 						React.createElement("div", {className: "required field"}, 
@@ -41892,18 +41912,24 @@
 						), 
 						React.createElement("div", {className: "required field"}, 
 							React.createElement("label", null, "Chọn tác giả"), 
-							React.createElement("button", {className: "ui fluid button", onClick: this.onClickAuthor, id: this.id_pre+'author_id'}, 
+							React.createElement("button", {className: "ui fluid secondary button", onClick: this.onClickAuthor, id: this.id_pre+'author_id'}, 
 								this.author.name
 							)
+						)
+					), 
+					React.createElement("div", {className: "two fields"}, 
+						React.createElement("div", {className: "required field"}, 
+							React.createElement("label", null, "Loại thơ"), 
+							React.createElement(Dropdown, {list: PoemsService.PoemType, ref: "poem_type", idx: this.id_pre+'type'})
+						), 
+						React.createElement("div", {className: "field"}, 
+							React.createElement("label", null, "Mô tả ngắn"), 
+							React.createElement("textarea", {rows: "2", id: this.id_pre+'description', placeholder: "Mô tả ngắn"})
 						)
 					), 
 					React.createElement("div", {className: "field"}, 
 						React.createElement("label", null, "Nội dung bài thơ"), 
 						React.createElement(TextEditor, {placeholder: "Bài thơ", ref: "content_editor"})
-					), 
-					React.createElement("div", {className: "field"}, 
-						React.createElement("label", null, "Mô tả bài thơ"), 
-						React.createElement("textarea", {id: this.id_pre+'description'})
 					)
 				)
 			);
@@ -41978,10 +42004,60 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
+
+	var Dropdown = React.createClass({displayName: "Dropdown",
+		root: null,
+		propTypes: {
+			idx: React.PropTypes.string,
+			list: React.PropTypes.object,
+			defaultText: React.PropTypes.string
+		},
+		getDefaultProps: function(){
+			return {
+				defaultText: 'Mời bạn chọn'
+			}
+		},
+		componentDidMount: function(){
+			var root = this.root = $(React.findDOMNode(this));
+
+			this.root.dropdown();
+		},
+		setValue: function(value){
+			this.root.dropdown('set selected', value);
+		},
+		getValue: function(){
+			return this.root.dropdown('get value');
+		},
+		render: function(){
+			var rows = [];
+			for(var key in this.props.list){
+				rows.push(React.createElement("div", {className: "item", "data-value": key, key: key}, this.props.list[key]));
+			}
+			
+			return (
+				React.createElement("div", {className: "ui search selection dropdown", id: this.props.idx}, 
+					React.createElement("input", {type: "hidden"}), 
+					React.createElement("i", {className: "dropdown icon"}), 
+					React.createElement("div", {className: "default text"}, this.props.defaultText), 
+					React.createElement("div", {className: "menu"}, rows)
+				)
+			)
+		}
+	});
+
+	module.exports = Dropdown;
+
+/***/ },
+/* 324 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(2);
 	var PoemsController = __webpack_require__(317);
+	var PoemsService = __webpack_require__(318);
 	var TextEditor = __webpack_require__(314);
 	var Dialog = __webpack_require__(320);
 	var AuthorPopup = __webpack_require__(322);
+	var Dropdown = __webpack_require__(323);
 
 	var Form = React.createClass({displayName: "Form",
 		id_pre: 'admin_poems_add_',
@@ -42015,7 +42091,7 @@
 					), 
 
 					React.createElement("div", {className: "field"}, 
-						React.createElement("button", {className: "ui green button", onClick: this.onClickSubmit}, "Sửa bài thơ")
+						React.createElement("button", {className: "ui small secondary button", onClick: this.onClickSubmit}, "Sửa thơ")
 					), 
 					React.createElement("div", {className: "two fields"}, 
 						React.createElement("div", {className: "required field"}, 
@@ -42024,18 +42100,24 @@
 						), 
 						React.createElement("div", {className: "required field"}, 
 							React.createElement("label", null, "Chọn tác giả"), 
-							React.createElement("button", {className: "ui fluid button", onClick: this.onClickAuthor, id: this.id_pre+'author_id'}, 
+							React.createElement("button", {className: "ui fluid secondary button", onClick: this.onClickAuthor, id: this.id_pre+'author_id'}, 
 								this.author.name
 							)
+						)
+					), 
+					React.createElement("div", {className: "two fields"}, 
+						React.createElement("div", {className: "required field"}, 
+							React.createElement("label", null, "Loại thơ"), 
+							React.createElement(Dropdown, {list: PoemsService.PoemType, ref: "poem_type", idx: this.id_pre+'type'})
+						), 
+						React.createElement("div", {className: "field"}, 
+							React.createElement("label", null, "Mô tả ngắn"), 
+							React.createElement("textarea", {rows: "2", id: this.id_pre+'description', placeholder: "Mô tả ngắn"})
 						)
 					), 
 					React.createElement("div", {className: "field"}, 
 						React.createElement("label", null, "Nội dung bài thơ"), 
 						React.createElement(TextEditor, {placeholder: "Bài thơ", ref: "content_editor"})
-					), 
-					React.createElement("div", {className: "field"}, 
-						React.createElement("label", null, "Mô tả bài thơ"), 
-						React.createElement("textarea", {id: this.id_pre+'description'})
 					)
 				)
 			);
@@ -42045,7 +42127,7 @@
 	module.exports = Form;
 
 /***/ },
-/* 324 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
@@ -42066,11 +42148,11 @@
 	module.exports = Template;
 
 /***/ },
-/* 325 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(moment) {var React = __webpack_require__(2);
-	var PoemsController = __webpack_require__(317);
+	var React = __webpack_require__(2);
+	var PaintingController = __webpack_require__(327);
 	var Config = __webpack_require__(298);
 	var Pagination = __webpack_require__(319);
 	var Dialog = __webpack_require__(320);
@@ -42092,16 +42174,16 @@
 			}
 		},
 		componentDidMount: function(){
-			PoemsController.listPoems(this);
+			PaintingController.listPainting(this);
 		},
 		onClickAdd: function(){
 			this.context.router.transitionTo('admin_painting_add');
 		},
 		onClickPage: function(page){
-			PoemsController.onClickPage(this, page);
+			PaintingController.onClickPage(this, page);
 		},
 		onEnterName: function(event){
-			PoemsController.onEnterName(this, event);
+			PaintingController.onEnterName(this, event);
 		},
 		goToEdit: function(poem, event){
 			this.context.router.transitionTo('admin_poems_edit', {id: poem.id});
@@ -42111,7 +42193,7 @@
 			this.refs.remove_dialog.open();
 		},
 		onClickRemoveDialog: function(action){
-			PoemsController.onRemove(this, action);
+			PaintingController.onRemove(this, action);
 		},
 		render: function(){
 			var paginate_display = (this.state.count > 0) ? 'block' : 'none';
@@ -42131,7 +42213,7 @@
 					), 
 					React.createElement("div", {className: "row"}, 
 						React.createElement("div", {className: "column"}, 
-							React.createElement("div", {className: "ui positive button", onClick: this.onClickAdd}, "Thêm ảnh"), 
+							React.createElement("div", {className: "ui positive button", onClick: this.onClickAdd}, "Thêm tranh"), 
 							React.createElement("span", {style: {float: 'right', display: paginate_display}}, 
 								React.createElement(Pagination, {count: this.state.count, 
 									countData: this.state.list.length, onClickPage: this.onClickPage})
@@ -42143,8 +42225,8 @@
 							React.createElement("div", {className: "ui small form"}, 
 								React.createElement("div", {className: "three fields"}, 
 									React.createElement("div", {className: "field"}, 
-										React.createElement("label", null, "Tên bài thơ"), 
-										React.createElement("input", {type: "text", placeholder: "Tên bài thơ", onKeyDown: this.onEnterName})
+										React.createElement("label", null, "Tên tranh"), 
+										React.createElement("input", {type: "text", placeholder: "Tên tranh", onKeyDown: this.onEnterName})
 									)
 								)
 							)
@@ -42152,31 +42234,30 @@
 					), 
 					React.createElement("div", {className: "row"}, 
 						React.createElement("div", {className: "column"}, 
-							React.createElement("div", {className: "ui basic segment", style: {padding: 0}, ref: "table_list"}, 
-								React.createElement("table", {className: "ui table"}, 
-									React.createElement("thead", null, 
-										React.createElement("tr", null, 
-											React.createElement("th", null, "Tên bài thơ"), 
-											React.createElement("th", null, "Ngày tạo"), 
-											React.createElement("th", null, "Thao tác")
-										)
-									), 
-									React.createElement("tbody", null, 
+							React.createElement("div", {className: "ui basic segment", style: {padding: 0}, ref: "table_list", ref: "card_list"}, 
+								React.createElement("div", {className: "ui cards", ref: "card_list"}, 
 									
 										this.state.list.map(function(row, index){
 											return (
-												React.createElement("tr", {key: index}, 
-													React.createElement("td", null, row.name), 
-													React.createElement("td", null, moment(row.created_at).tz(Config.clientTimezone).format('DD/MM/YYYY HH:mm:ss')), 
-													React.createElement("td", null, 
-														React.createElement("a", {onClick: this.goToEdit.bind(this, row)}, "Sửa | "), 
-														React.createElement("a", {onClick: this.openRemoveDialog.bind(this, row)}, "Xóa")
-													)
+												React.createElement("div", {className: "card", key: index}, 
+													React.createElement("div", {className: "image"}, 
+														React.createElement("img", {src: row.image})
+													), 
+													React.createElement("div", {className: "content"}, 
+														React.createElement("div", {className: "header"}, 
+															row.name
+														)
+													), 
+													React.createElement("div", {className: "extra content"}, 
+												      	React.createElement("div", {className: "ui two buttons"}, 
+												        	React.createElement("div", {className: "ui green button"}, "Sửa"), 
+												        	React.createElement("div", {className: "ui red button"}, "Xóa")
+												      )
+												    )
 												)
 											)
 										}, this)
 									
-									)
 								)
 							)
 						)
@@ -42187,96 +42268,12 @@
 	});
 
 	module.exports = List;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(205)))
-
-/***/ },
-/* 326 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(2);
-	var PaintingController = __webpack_require__(327);
-	var Avatar = __webpack_require__(329);
-	var TextEditor = __webpack_require__(314);
-	var Dialog = __webpack_require__(320);
-	var AuthorPopup = __webpack_require__(322);
-
-	var Form = React.createClass({displayName: "Form",
-		id_pre: 'admin_painting_add_',
-		author: null,
-		contextTypes: {
-			router: React.PropTypes.func
-		},
-		componentWillMount: function(){
-			this.author = {id: null, name: 'Chưa có'};
-		},
-		onClickSubmit: function(){
-			PaintingController.onClickSubmit(this);
-		},
-		onClickAuthor: function(){
-			this.refs.author_dialog.open();
-		},
-		onClickRowAuthor: function(row){
-			this.author.id = row.id;
-			this.author.name = row.name;
-			this.forceUpdate();
-			this.refs.author_dialog.close();
-		},
-		render: function(){
-			return (
-				React.createElement("div", {className: "ui grid"}, 
-					React.createElement(Dialog, {header: "Chọn tác giả", ref: "author_dialog"}, 
-						React.createElement(AuthorPopup, {onClickRow: this.onClickRowAuthor})
-					), 
-					React.createElement("div", {className: "row"}, 
-						React.createElement("div", {className: "column"}, 
-							React.createElement("button", {className: "ui green button", onClick: this.onClickSubmit}, "Thêm tranh")
-						)
-					), 
-					React.createElement("div", {className: "two column row"}, 
-						React.createElement("div", {className: "column"}, 
-							React.createElement(Avatar, {ref: "avatar"})
-						), 
-						React.createElement("div", {className: "column"}, 
-							React.createElement("div", {className: "ui form"}, 
-								React.createElement("div", {className: "required field"}, 
-									React.createElement("label", null, "Tên tranh"), 
-									React.createElement("input", {type: "text", placeholder: "Tên bài thơ", id: this.id_pre+'name'})
-								), 
-								React.createElement("div", {className: "required field"}, 
-									React.createElement("label", null, "Chọn tác giả"), 
-									React.createElement("button", {className: "ui fluid button", onClick: this.onClickAuthor, id: this.id_pre+'author_id'}, 
-										this.author.name
-									)
-								), 
-								React.createElement("div", {className: "field"}, 
-									React.createElement("label", null, "Mô tả ngắn"), 
-									React.createElement("textarea", {placeholder: "Mô tả ngắn về tranh", id: this.id_pre+'description'})
-								)
-							)
-						)
-					), 
-					React.createElement("div", {className: "row"}, 
-						React.createElement("div", {className: "column"}, 
-							React.createElement("div", {className: "ui form"}, 
-								React.createElement("div", {className: "field"}, 
-									React.createElement("label", null, "Mô tả chi tiết"), 
-									React.createElement(TextEditor, {placeholder: "Mô tả chi tiết tranh vẽ", ref: "content_editor"})
-								)
-							)
-						)
-					)
-				)
-			);
-		}
-	});
-
-	module.exports = Form;
 
 /***/ },
 /* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Cookies) {var React = __webpack_require__(2);
+	/* WEBPACK VAR INJECTION */(function(Cookies, moment) {var React = __webpack_require__(2);
 	var PaintingService = __webpack_require__(328);
 	var PoemsService = __webpack_require__(318);
 	var Validation = __webpack_require__(299);
@@ -42305,14 +42302,14 @@
 
 			})
 		},
-		listPoems: function(dom){
+		listPainting: function(dom){
 			var postData = {limit: dom.limit, offset: dom.offset, search: dom.search};
-			$(React.findDOMNode(dom.refs.table_list)).addClass('loading');
+			$(React.findDOMNode(dom.refs.card_list)).addClass('loading');
 
-			PoemsService.list(postData)
+			PaintingService.list(postData)
 			.then(function(response){
 				if(dom.isMounted()){
-					$(React.findDOMNode(dom.refs.table_list)).removeClass('loading');
+					$(React.findDOMNode(dom.refs.card_list)).removeClass('loading');
 					dom.setState({list: response.data, count: response.count});
 				}
 			}, function(error){
@@ -42321,19 +42318,19 @@
 		},
 		onClickPage: function(dom, page){
 			dom.offset = (page-1)*dom.limit;
-			this.listPoems(dom);
+			this.listPainting(dom);
 		},
 		onEnterName: function(dom, event){
 			if(event.keyCode === 13){
 				dom.search.name = event.target.value;
 				dom.offset = 0;
-				this.listPoems(dom);
+				this.listPainting(dom);
 			}
 		},
 		resetForm: function(dom){
 			$('#'+dom.id_pre+'name').val('');
 			dom.author = {
-				id: null,
+				id: '',
 				name: 'Chưa có'
 			},
 			dom.refs.content_editor.reset();
@@ -42347,32 +42344,25 @@
 				var admin_user = JSON.parse(Cookies.get('admin_user'));
 				user_id = admin_user.id;
 			}
-			var photo = dom.refs.avatar.getAvatar();
-			var name = $('#'+dom.id_pre+'name').val();
 
-			data.append('image', photo);
-			data.append('name', name);
-
-			return data;
-
-			/*var user_id = null;
-
-			if(Cookies.get('admin_user')){
-				var admin_user = JSON.parse(Cookies.get('admin_user'));
-				user_id = admin_user.id;
-			}
-
-			var name = $('#'+dom.id_pre+'name').val();
-			var description = $('#'+dom.id_pre+'description').val();
-			var content = dom.refs.content_editor.getHTML();
-			var author_id = dom.author.id;
 			var now = moment().tz(Config.serverTimezone).format('YYYY-MM-DD HH:mm:ss');
 			var created_at = updated_at = now;
 
-			return {
-				name: name, content: content, description: description, author_id: author_id,
-				created_at: created_at, updated_at: updated_at, created_by: user_id, updated_by: user_id
-			}*/
+			var photo = dom.refs.avatar.getAvatar();
+			var name = $('#'+dom.id_pre+'name').val();
+			var author_id = dom.author.id;
+			var description = $('#'+dom.id_pre+'description').val();
+			var content = dom.refs.content_editor.getHTML();
+
+			data.append('image', photo);
+			data.append('name', name);
+			data.append('author_id', author_id);
+			data.append('description', description);
+			data.append('content', content);
+			data.append('user_id', user_id);
+			data.append('current_date', created_at);		
+
+			return data;
 		},
 		beforeSubmit: function(dom){
 			$(React.findDOMNode(dom)).removeClass('error');
@@ -42380,30 +42370,24 @@
 			Validation.beforeErrorsDiv(dom);
 		},
 		onClickSubmit: function(dom){
+			this.beforeSubmit(dom);
 			var postData = this.getInputsValue(dom);
 
 			PaintingService.add(postData)
 			.then(function(response){
-
-			}, function(error){
-				console.log(error);
-			})
-
-			/*this.beforeSubmit(dom);
-			var postData = this.getInputsValue(dom);
-
-			PoemsService.add(postData)
-			.then(function(response){
 				$(React.findDOMNode(dom)).removeClass('loading');
 				this.resetForm(dom);
-				dom.context.router.transitionTo('admin_poems_list');
+				dom.context.router.transitionTo('admin_painting_list');
 			}.bind(this), function(error){
 				$(React.findDOMNode(dom)).removeClass('loading');
 				$(React.findDOMNode(dom)).addClass('error');
-
-				if(error.status === 400)
-					Validation.afterErrorsDiv(dom, error.messages);
-			}.bind(this))*/
+				if(error.status === 400){
+					if(is.not.array(error.messages))
+						dom.refs.image_error_dialog.open();
+					else
+						Validation.afterErrorsDiv(dom, error.messages);
+				}
+			}.bind(this))
 		},
 		onClickEdit: function(dom){
 			this.beforeSubmit(dom);
@@ -42430,7 +42414,7 @@
 				.then(function(deleted){
 					this.listPoems(dom);
 				}.bind(this), function(error){
-
+					
 				})
 			}
 
@@ -42439,7 +42423,7 @@
 	}
 
 	module.exports = Controller;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(205)))
 
 /***/ },
 /* 328 */
@@ -42548,10 +42532,96 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
+	var PaintingController = __webpack_require__(327);
+	var Avatar = __webpack_require__(330);
+	var TextEditor = __webpack_require__(314);
+	var Dialog = __webpack_require__(320);
+	var AuthorPopup = __webpack_require__(322);
+
+	var Form = React.createClass({displayName: "Form",
+		id_pre: 'admin_painting_add_',
+		author: '',
+		contextTypes: {
+			router: React.PropTypes.func
+		},
+		componentWillMount: function(){
+			this.author = {id: '', name: 'Chưa có'};
+		},
+		onClickSubmit: function(){
+			PaintingController.onClickSubmit(this);
+		},
+		onClickAuthor: function(){
+			this.refs.author_dialog.open();
+		},
+		onClickRowAuthor: function(row){
+			this.author.id = row.id;
+			this.author.name = row.name;
+			this.forceUpdate();
+			this.refs.author_dialog.close();
+		},
+		render: function(){
+			return (
+				React.createElement("div", {className: "ui grid"}, 
+					React.createElement(Dialog, {header: "Chọn tác giả", ref: "author_dialog"}, 
+						React.createElement(AuthorPopup, {onClickRow: this.onClickRowAuthor})
+					), 
+					React.createElement(Dialog, {header: "Thông báo lỗi", ref: "image_error_dialog"}, 
+						React.createElement("p", null, "Ảnh chưa chọn. Mời bạn chọn ảnh rồi thêm lại")
+					), 
+					React.createElement("div", {className: "row"}, 
+						React.createElement("div", {className: "column"}, 
+							React.createElement("button", {className: "ui green button", onClick: this.onClickSubmit}, "Thêm tranh")
+						)
+					), 
+					React.createElement("div", {className: "two column row"}, 
+						React.createElement("div", {className: "column"}, 
+							React.createElement(Avatar, {ref: "avatar"})
+						), 
+						React.createElement("div", {className: "column"}, 
+							React.createElement("div", {className: "ui form"}, 
+								React.createElement("div", {className: "required field"}, 
+									React.createElement("label", null, "Tên tranh"), 
+									React.createElement("input", {type: "text", placeholder: "Tên bài thơ", id: this.id_pre+'name'})
+								), 
+								React.createElement("div", {className: "required field"}, 
+									React.createElement("label", null, "Chọn tác giả"), 
+									React.createElement("button", {className: "ui fluid button", onClick: this.onClickAuthor, id: this.id_pre+'author_id'}, 
+										this.author.name
+									)
+								), 
+								React.createElement("div", {className: "field"}, 
+									React.createElement("label", null, "Mô tả ngắn"), 
+									React.createElement("textarea", {placeholder: "Mô tả ngắn về tranh", id: this.id_pre+'description'})
+								)
+							)
+						)
+					), 
+					React.createElement("div", {className: "row"}, 
+						React.createElement("div", {className: "column"}, 
+							React.createElement("div", {className: "ui form"}, 
+								React.createElement("div", {className: "field"}, 
+									React.createElement("label", null, "Mô tả chi tiết"), 
+									React.createElement(TextEditor, {placeholder: "Mô tả chi tiết tranh vẽ", ref: "content_editor"})
+								)
+							)
+						)
+					)
+				)
+			);
+		}
+	});
+
+	module.exports = Form;
+
+/***/ },
+/* 330 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(2);
 
 	var Avatar = React.createClass({displayName: "Avatar",
 		id_pre: 'avatar_photo',
-		image: null,
+		image: '',
 		getInitialState: function(){
 			return {
 				image: 'images/empty_gallery.png'
